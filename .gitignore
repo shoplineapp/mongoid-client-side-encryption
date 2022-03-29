@@ -1,0 +1,30 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore credential files
+.credentials
+
+# Ignore OS files
+**/.DS_Store
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/log/
+/tmp
+public/check.html
+coverage
+.powrc
+.env.development
+.env.test
+.vscode
+
+.terraform
+/helm/staging/dist
+.devcontainer
+
+# rubymine
+.idea

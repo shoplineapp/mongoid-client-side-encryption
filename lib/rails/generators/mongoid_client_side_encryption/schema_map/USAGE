@@ -1,0 +1,8 @@
+Description:
+    This generator will lookup for models registered client-side encryption and generate schema map based on the encrypt options
+
+Example:
+    rails generate mongoid_client_side_encryption:schema_map
+
+    This will create:
+        config/mongodb_schema_map.json
