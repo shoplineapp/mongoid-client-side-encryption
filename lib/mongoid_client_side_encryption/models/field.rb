@@ -3,20 +3,27 @@
 module MongoidClientSideEncryption
   module Models
     class Field
-      TYPE_MAPPINGS = ::Mongoid::Fields::TYPE_MAPPINGS.invert.freeze
+      TYPE_MAPPINGS = ::Mongoid::Fields::TYPE_MAPPINGS.invert.merge({ Hash => 'object' }).freeze
       DEFAULT_ENCRYPT_ALGORITHM = 'AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic'.freeze
+      ENCRYPT_ALGORITHM_RANDOM = 'AEAD_AES_256_CBC_HMAC_SHA_512-Random'.freeze
 
       attr_reader :name, :encrypted_field_name, :schema
 
       def initialize(klass, field, options = {})
+        options = {} if options == true
+
         @name = klass.database_field_name(field.name)
         @encrypted_field_name = :"encrypted_#{field.name}"
+        @options = {
+          migrating: false,
+          algorithm: DEFAULT_ENCRYPT_ALGORITHM,
+        }.merge(options)
         @schema = {
           'bsonType' => TYPE_MAPPINGS[field.type],
-          'algorithm' => options.fetch(:algorithm, DEFAULT_ENCRYPT_ALGORITHM),
+          'algorithm' => field.type.to_s.in?(%w[Hash Array]) ? ENCRYPT_ALGORITHM_RANDOM : @options.fetch(:algorithm),
         }
-        if options.fetch(:key_id, nil).present?
-          @schema['keyId'] = [{ '$uuid' => options.fetch(:key_id) }]
+        if @options.fetch(:key_id, nil).present?
+          @schema['keyId'] = [{ '$uuid' => @options.fetch(:key_id) }]
         end
       end
 
