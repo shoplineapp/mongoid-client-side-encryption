@@ -20,8 +20,17 @@ module MongoidClientSideEncryption
       }
     end
 
+    def self.encrypted_models
+      @@encrypted_models ||= {}
+    end
+
+    def self.added?(klass)
+      encrypted_models[klass.name.to_s].present?
+    end
+
     def self.add(klass, encrypt_metadata: {})
       @@encrypted_models ||= {}
+      return if @@encrypted_models[klass.name.to_s].present?
 
       model = self.new(klass)
 

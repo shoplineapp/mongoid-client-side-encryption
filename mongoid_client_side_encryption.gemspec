@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency "rails"
+  s.add_dependency "hashie"
   s.add_dependency "mongoid", ">= 7.0.3"
   s.add_dependency "mongo", ">= 2.12.1"
 
