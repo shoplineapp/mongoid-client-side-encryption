@@ -2,8 +2,8 @@
 
 ENV['RUBY_ENV'] = 'test'
 
-require 'rails'
-require 'bundler'
+require 'rubygems'
+require 'bundler/setup'
 require 'mongoid'
 
 Mongoid.load!(
@@ -21,8 +21,6 @@ RSpec.configure do |config|
   config.order = :random
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
-
-  config.include FactoryBot::Syntax::Methods
 
   Mongoid.raise_not_found_error = false
 end

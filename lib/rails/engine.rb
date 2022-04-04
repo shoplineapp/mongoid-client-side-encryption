@@ -1,5 +1,5 @@
 module MongoidClientSideEncryption
-  class Engine < ::Rails::Engine
+  class Engine < Rails::Engine
     config.generators do |g|
       g.orm :mongoid
       g.test_framework :rspec, fixture: false

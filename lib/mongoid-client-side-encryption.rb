@@ -1,3 +1,4 @@
+require 'rails'
 require 'active_support/all'
 require 'mongoid_client_side_encryption/model'
 require 'mongoid_client_side_encryption/encryptable'

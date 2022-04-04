@@ -1,19 +1,5 @@
 $:.push File.expand_path('../lib', __FILE__)
 
-# Force to load simplecov before requiring any file (say the version file)
-if ENV['RAILS_ENV'] == 'test'
-  require 'simplecov'
-  require 'coveralls'
-
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-    SimpleCov::Formatter::HTMLFormatter,
-    Coveralls::SimpleCov::Formatter
-  ]
-  SimpleCov.start 'rails' do
-    add_filter 'lib/generators'
-  end
-end
-
 require "mongoid_client_side_encryption/version"
 
 # Describe your gem and declare its dependencies:
@@ -37,6 +23,5 @@ Gem::Specification.new do |s|
   s.add_dependency "mongo", ">= 2.12.1"
 
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency 'simplecov'
 end

@@ -1,0 +1,40 @@
+name: Rspec
+on:
+  push:
+    paths-ignore:
+    - README.md
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [2.6]
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:5.0.1
+        ports:
+        - 27017:27017
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - name: Set up cache
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-${{ matrix.ruby }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.ruby }}-gems-
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+        run: |
+          gem install bundler
+          bundle install --with test --jobs 4 --retry 3
+          bundle exec rspec
