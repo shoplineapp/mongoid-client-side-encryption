@@ -15,6 +15,9 @@ describe MongoidClientSideEncryption::Models::Field do
     field :agreement, type: Boolean, encrypt: true
     field :balance, type: Integer, encrypt: true
     field :precise_balance, type: Float, encrypt: true
+
+    encrypts_field 'nested_data.id', type: Integer, encrypt: true
+    encrypts_field 'nested_data.config.secret', type: String, encrypt: true
   end
 
   context 'when the model is using encrypt option' do
@@ -93,6 +96,24 @@ describe MongoidClientSideEncryption::Models::Field do
       it 'reads data from original field' do
         object = MockUser.new phone: original_phone
         expect(object.phone).to eq original_phone
+      end
+    end
+  end
+
+  context 'when model registers with encrypts_field manually' do
+    it 'does not provide getter/setter' do
+      object = MockUser.new
+      expect(object).not_to respond_to(:encrypted_nested_data)
+    end
+
+    context 'when field is nested' do
+      let(:field_name) { 'nested_data.config.secret' }
+      subject(:fields) { MongoidClientSideEncryption::Model.encrypted_models['MockUser'].fields }
+      it 'assigns field with dot notation name and encrypt option as usual' do
+        nested_field = fields.find { |field| field.name == field_name }
+        expect(nested_field.schema['algorithm']).to eq MongoidClientSideEncryption::Models::Field::ENCRYPT_ALGORITHM_DETERMINISTIC
+        expect(nested_field.name).to eq(field_name)
+        expect(nested_field.encrypted_field_name).to eq(field_name)
       end
     end
   end

@@ -13,17 +13,7 @@ module MongoidClientSideEncryption
     def create_schema_map_file
       # Rendering YML with ERB cannot preseve the indentation
       # Force schema map to formatted JSON string
-      schema_map = Model.encrypted_models.reduce({}) do |obj, (_, model)|
-        obj[model.namespace] = model.schema.merge({
-          properties: model.fields.reduce({}) do |props, field|
-            props[field.encrypted_field_name] = {
-              encrypt: field.schema,
-            }
-            props
-          end
-        })
-        obj
-      end
+      schema_map = MongoidClientSideEncryption.schema_map
       create_file "config/mongodb_schema_map.json", schema_map.to_json
     end
 

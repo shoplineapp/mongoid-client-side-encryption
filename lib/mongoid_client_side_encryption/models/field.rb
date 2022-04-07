@@ -25,7 +25,7 @@ module MongoidClientSideEncryption
         options = {} if options == true
 
         @name = klass.database_field_name(field.name)
-        @encrypted_field_name = :"encrypted_#{field.name}"
+        @encrypted_field_name = options[:manual] ? @name : :"encrypted_#{field.name}"
         @options = DEFAULT_OPTIONS.merge(options)
         @schema = {
           'bsonType' => TYPE_MAPPINGS[field.type],
@@ -37,6 +37,8 @@ module MongoidClientSideEncryption
       end
 
       def self.manual_add(klass, field_key, options)
+        options[:encrypt] = {} if options[:encrypt] == true
+
         field = Hashie::Mash.new({
           name: field_key.to_s,
           type: options[:type],
