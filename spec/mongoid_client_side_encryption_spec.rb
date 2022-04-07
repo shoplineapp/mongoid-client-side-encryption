@@ -22,40 +22,38 @@ describe MongoidClientSideEncryption do
       end
     end
 
-    subject { MongoidClientSideEncryption.schema_map.deep_stringify_keys }
+    subject { MongoidClientSideEncryption.schema_map.deep_stringify_keys['shopline_test.mock_models'] }
 
     it 'renders a schema map based on registered model and field schema' do
       is_expected.to match({
-        'shopline_test.mock_models' => {
-          'bsonType' => 'object',
-          'encryptMetadata' => {
-            'keyId' => ['$uuid' => key_id],
-            'algorithm' => algorithm,
+        'bsonType' => 'object',
+        'encryptMetadata' => {
+          'keyId' => ['$uuid' => key_id],
+          'algorithm' => algorithm,
+        },
+        'properties' => {
+          'encrypted_email' => {
+            'encrypt' => {
+              'bsonType' => 'string',
+              'algorithm' => MongoidClientSideEncryption::Models::Field::DEFAULT_ENCRYPT_ALGORITHM,
+            }
           },
-          'properties' => {
-            'encrypted_email' => {
-              'encrypt' => {
-                'bsonType' => 'string',
-                'algorithm' => MongoidClientSideEncryption::Models::Field::DEFAULT_ENCRYPT_ALGORITHM,
-              }
-            },
-            'some_data' => {
-              'bsonType' => 'object',
-              'properties' => {
-                'id' => {
-                  'encrypt' => {
-                    'bsonType' => 'double',
-                    'algorithm' => MongoidClientSideEncryption::Models::Field::DEFAULT_ENCRYPT_ALGORITHM,
-                  }
-                },
-                'config' => {
-                  'bsonType' => 'object',
-                  'properties' => {
-                    'secret' => {
-                      'encrypt' => {
-                        'bsonType' => 'string',
-                        'algorithm' => MongoidClientSideEncryption::Models::Field::DEFAULT_ENCRYPT_ALGORITHM,
-                      }
+          'some_data' => {
+            'bsonType' => 'object',
+            'properties' => {
+              'id' => {
+                'encrypt' => {
+                  'bsonType' => 'double',
+                  'algorithm' => MongoidClientSideEncryption::Models::Field::DEFAULT_ENCRYPT_ALGORITHM,
+                }
+              },
+              'config' => {
+                'bsonType' => 'object',
+                'properties' => {
+                  'secret' => {
+                    'encrypt' => {
+                      'bsonType' => 'string',
+                      'algorithm' => MongoidClientSideEncryption::Models::Field::DEFAULT_ENCRYPT_ALGORITHM,
                     }
                   }
                 }

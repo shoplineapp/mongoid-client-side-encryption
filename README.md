@@ -45,6 +45,12 @@ class User
     algorithm: 'AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic',
     key_id: 'bdf8a4b0-9e29-44eb-9c4d-f66391ff731f'
   }
+
+  # For hash and array fields, algorithm is forced to be AEAD_AES_256_CBC_HMAC_SHA_512-Random
+  field :some_data, type: Hash, encrypt: true
+
+  # For manual registration on nested/embedded document, do not provide double-write feature
+  encrypts_field 'embedded_field.secret', type: String, encrypt: true
 end
 ```
 
@@ -121,9 +127,10 @@ Lists the supported parameters of the `encrypt` option in field definition
   
 | Parameter | Description | Default |
 | ------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------|
-| `migrating` | When this is `true`, the gem will try to double-write data into encrypted and unencrypted field, and `FIELD_XXX` constant will return the unencrypted field as well.<br><br>Expects application to migrate and encrypt data into encrypted field and then switch this config to `false` | `false` |
-| `algorithm` | The encryption algorithm to use to encrypt a given field.<br><br>Supported Supports:<br>`AEAD_AES_256_CBC_HMAC_SHA_512-Random`<br>`AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic` | `AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic` |
-| `key_id` | The UUID of the field level data encryption key | `nil` |
+| `encrypt` | When this is `true`, register the field with all the default options | `nil` |
+| `encrypt.migrating` | When this is `true`, the gem will try to double-write data into encrypted and unencrypted field, and `FIELD_XXX` constant will return the unencrypted field as well.<br><br>Expects application to migrate and encrypt data into encrypted field and then switch this config to `false` | `false` |
+| `encrypt.algorithm` | The encryption algorithm to use to encrypt a given field.<br><br>Supported Supports:<br>`AEAD_AES_256_CBC_HMAC_SHA_512-Random`<br>`AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic` | `AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic` |
+| `encrypt.key_id` | The UUID of the field level data encryption key | `nil` |
 
 ## Demo
 
