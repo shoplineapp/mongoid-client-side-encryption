@@ -198,7 +198,7 @@ Model.collection.bulk_write([
 ## Known issues
 
 There are some limitations with this gem:
-- It does not work with deeply nested embedded field on schema map
+- When you are doing manual registration with `encrypts_field`, it won't provide double-write with encrypted fields as it's made for nested fields in embedded document.
 
 ## License
 
