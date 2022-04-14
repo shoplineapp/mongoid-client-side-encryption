@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'mongoid'
+
 module MongoidClientSideEncryption
   module Models
     class Field

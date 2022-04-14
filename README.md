@@ -10,10 +10,6 @@ This gem is an extension on Mongoid for enhancing the developer experience on th
 - Makes migrating existing data easy
   - Double-write existing and encrypted fields for safe-migration (value will be saved into original field and an encrypted field simultaneously)
 
-Remarks:  
-> Since Mongoid with Rails are strictly working with mongoid.yml, there is an issue that mongo-ruby-driver expects the data keys of schema map in BSON::Binary format and there is no way to work the YAML file.  
-We changed the crypt handler in mongo-ruby-driver and add extra `BSON::ExtJSON.parse` step before setting up the schema map. You might reference to this [patched branch](https://github.com/shoplineapp/mongo-ruby-driver/tree/feature/mongo-crypt-schema-map-init) instead.
-
 
 ## Installation
 
@@ -107,7 +103,8 @@ clients:
       auto_encryption_options:
         key_vault_namespace: ...
         kms_providers: ...
-        schema_map: <%= File.read('config/mongodb_schema_map.json') %>
+        schema_map: !ruby/object:MongoidClientSideEncryption::SchemaMap
+          data: <%= File.read('config/mongodb_schema_map.json') %>
     ...
 ```
 
