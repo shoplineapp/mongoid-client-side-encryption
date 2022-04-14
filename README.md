@@ -196,6 +196,7 @@ Model.collection.bulk_write([
 
 There are some limitations with this gem:
 - When you are doing manual registration with `encrypts_field`, it won't provide double-write with encrypted fields as it's made for nested fields in embedded document.
+- If you are using Mongoid 7.4.0 up, you will face an error on loading mongoid.yml with this gem as there is a [update](https://github.com/mongodb/mongoid/pull/5112) added to `Mongoid::Config::Environment` with `YAML.safe_load`. And there is currently no way to supply custom permitted classes in, consider using this [patch](https://github.com/mongodb/mongo-ruby-driver/pull/2429/files) and use the schema map as JSON string directly in `mongoid.yml`
 
 ## License
 
