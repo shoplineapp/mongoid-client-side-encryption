@@ -1,6 +1,7 @@
 require 'rails'
 require 'active_support/all'
 require 'mongoid_client_side_encryption/model'
+require 'mongoid_client_side_encryption/schema_map'
 require 'mongoid_client_side_encryption/encryptable'
 
 if defined?(Rails)

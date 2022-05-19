@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "hashie"
   s.add_dependency "mongoid", ">= 7.0.3"
   s.add_dependency "mongo", ">= 2.12.1"
+  s.add_dependency "bson", ">= 4.12.0"
 
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency 'simplecov'
