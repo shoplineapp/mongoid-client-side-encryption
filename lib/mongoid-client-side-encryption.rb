@@ -63,3 +63,8 @@ module MongoidClientSideEncryption
     end
   end
 end
+
+if defined?(Rails) && File.split($0).last == 'rspec'
+  # Trigger initializers manually if running in RSpec
+  MongoidClientSideEncryption::Railtie.initializers.each(&:run)
+end
